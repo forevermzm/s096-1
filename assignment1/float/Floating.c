@@ -84,8 +84,10 @@ int main(int argc, char const *argv[])
 
     fp = fopen(argv[1], "r");
     if (fp == NULL)
+    {
+        printf("File %s not found.\n", argv[1]);
         exit(EXIT_FAILURE);
-
+    }
     int n;
     getline(&line, &len, fp);
     sscanf(line, "%d", &n);
