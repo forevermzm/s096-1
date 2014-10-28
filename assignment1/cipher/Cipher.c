@@ -23,6 +23,17 @@ void encrypt( char *string, size_t length )
      * Fill this out!
      */
 
+    // Minimun length, don't have to do anything.
+    if (length <= 2)
+        return;
+    else
+    {
+        size_t sub_length = length / 2;
+        reverse(string, string + sub_length);
+        reverse(string + sub_length, string + length);
+        encrypt(string, sub_length);
+        encrypt(string + sub_length, length - sub_length);
+    }
 }
 
 /* Resize a string using realloc;
@@ -84,7 +95,7 @@ size_t getstr( char **str, FILE *input )
     // Try to read in the number of 'chars_to_read'; store # of
     // chars actually read from input in 'chars'
     size_t chars = 0;
-    while ( ( chars = fread( *str + length, 1, chars_to_read, input ) ) )
+    while ( chars = fread( *str + length, 1, chars_to_read, input ))
     {
         /* What you need to do:
          * We've just read # 'chars' into str. If we're at the end of
@@ -93,7 +104,16 @@ size_t getstr( char **str, FILE *input )
          * will be faster than others, so try out a couple of different
          * ways of doing this and pick the fastest one. DO NOT LEAK MEMORY!
          */
-        printf("%s\n", *str);
+        length += chars;
+        if ( chars == chars_to_read )
+        {
+            chars_to_read <<= 1;
+            resize_string( str, chars_to_read << 1 );
+        }
+        else
+        {
+            break;
+        }
     }
 
     // Add a terminating '\0' (removing the final newline)
@@ -111,12 +131,17 @@ size_t getstr( char **str, FILE *input )
     return length;
 }
 
-int main(void)
+int main(int argc, char const *argv[])
 {
-    FILE *input = fopen( "loop.in", "r" );
+    if (argc != 2)
+    {
+        printf("Usage: Cipher <loop_input>");
+        exit(EXIT_FAILURE);
+    }
+    FILE *input = fopen( argv[1] , "r" );
     if ( input == NULL )
     {
-        fprintf( stderr, "Could not open loop.in.\n" );
+        fprintf( stderr, "Could not open %s.\n", argv[1] );
         exit( EXIT_FAILURE );
     }
     char *string = NULL;
@@ -125,10 +150,12 @@ int main(void)
 
     encrypt( string, length );
 
-    FILE *output = fopen( "loop.out", "w" );
-    fprintf( output, "%zu\n", length );
-    fprintf( output, "%s\n", string );
-    fclose( output );
+    // FILE *output = fopen( "loop.out", "w" );
+    // fprintf( output, "%zu\n", length );
+    // fprintf( output, "%s\n", string );
+    // fclose( output );
+    printf( "%zu\n", length );
+    printf( "%s\n", string );
 
     free( string );
     return 0;

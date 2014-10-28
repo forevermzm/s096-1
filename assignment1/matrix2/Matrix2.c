@@ -95,7 +95,7 @@ int main(int argc, char const *argv[])
 {
     if (argc != 2)
     {
-        printf("Usage: Floating <floating_input>");
+        printf("Usage: Matrix <matrix_input>");
         exit(EXIT_FAILURE);
     }
     FILE *fp = fopen( argv[1],  "r" );
@@ -111,7 +111,7 @@ int main(int argc, char const *argv[])
     read_in_matrix(&m1, fp);
     read_in_matrix(&m2, fp);
     fclose(fp);
-    
+
     if (m1.C != m2.R)
     {
         initMatrix(&result, 0, 0);
