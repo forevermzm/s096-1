@@ -1,4 +1,4 @@
-CC := gcc 
-CFLAGS := -O0 -g -std=c99 -Wall -Wextra -Wshadow -pedantic –Werror 
-CXXFLAGS := -O0 -g -std=c++11 -Wall -Wextra -Wshadow -pedantic -Weffc++ -Werror 
-
+CC := gcc
+COMPILER_OPTIONS := -g -O0 -m64 -Wall -Wextra -Wshadow -Werror -pedantic
+CFLAGS := -std=c99 $(COMPILER_OPTIONS)
+CXXFLAGS := -std=c++11 -Weffc++ $(COMPILER_OPTIONS)
